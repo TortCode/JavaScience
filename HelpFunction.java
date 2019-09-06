@@ -1,19 +1,19 @@
 public boolean isPathClear(Square dest, boolean captureAllowed) { //path must be vertical,horizontal,diagonal
-  if(dest == location) return true;
-  int r = location.getRow(), c = location.getCol();
-  int endr = dest.getRow(), endc = dest.getCol();
-  int dr = signum(endr - r), dc = signum(endc - c);
-  r += dr; c += dc;
-  while (r != destr || c != destc) {
-    if (squares[r][c].getPiece() != null)
-      return false;
-    r += dr;
-    c += dc;
-  }
-  if (dest.getPiece() != null)
-    return captureAllowed;
-  return true;
-}
+	  if(dest == location) return false;
+	  int r = location.getRow(), c = location.getCol();
+	  int endr = dest.getRow(), endc = dest.getCol();
+	  int dr = signum(endr - r), dc = signum(endc - c);
+	  r += dr; c += dc;
+	  while (r != endr || c != endc) {
+	    if (GameBoard.squares[r][c].getPiece() != null)
+	      return false;
+	    r += dr;
+	    c += dc;
+	  }
+	  if (dest.getPiece() != null)
+	    return captureAllowed && dest.getPiece().team != this.team;
+	  return true;
+	}
 //pawn isMoveLegal
 public boolean isMoveLegal(Square dest) {
   int dir = (getTeam())? 1 : -1; //move down for black, up for white
