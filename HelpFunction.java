@@ -16,7 +16,7 @@ public boolean isPathClear(Square dest, boolean captureAllowed) { //path must be
 }
 //pawn isMoveLegal
 public boolean isMoveLegal(Square dest) {
-  int dir = (getTeam())? -1 : 1; //move down for black, up for white
+  int dir = (getTeam())? 1 : -1; //move down for black, up for white
   int dr = rowDiff(dest), dc = colDiff(dest);
   
   if (dr == dir*1 && dc == 0) {
