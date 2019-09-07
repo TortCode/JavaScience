@@ -92,9 +92,6 @@ public class GameBoard extends JFrame {
 			if (cp.isMoveLegal(dest)) {
 				passable = null;
 				cp.move(dest);
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {}
 				// is pawn promoted
 				if (cp instanceof Pawn
 						&& dest.getRow() == (turn ? GameBoard.ROWS - 1 : 0)) {
