@@ -1,3 +1,3 @@
 # JavaScience
 ## All that grubby java
-### Mostly school stuff
+Mostly school stuff
