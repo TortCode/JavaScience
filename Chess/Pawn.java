@@ -25,7 +25,7 @@ public class Pawn extends ChessPiece {
 		return false;
 	}
 
-	public Square enPassantSquare(Square dest) {
+	private Square enPassantSquare(Square dest) {
 		int dir = getTeam() ? 1 : -1;
 		return GameBoard.squares[dest.getRow() - dir][dest.getCol()];
 	}
