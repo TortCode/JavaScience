@@ -11,7 +11,6 @@ public class GameBoard extends JFrame {
 	static Square[][] squares = new Square[ROWS][COLS];
 	// move squares
 	private static Square src, dest;
-	// critical pieces
 	private static King wKing, bKing;
 	static Pawn passable;
 	// last piece taken
@@ -124,25 +123,28 @@ public class GameBoard extends JFrame {
 				JOptionPane.INFORMATION_MESSAGE, null, promoteOptions,
 				promoteOptions[0]);
 		Square sq = p.location;
+		p.location = null;
 		boolean tm = p.getTeam();
+		ChessPiece cp;
 		switch (newcp) {
 			case QUEEN :
-				new Queen(tm, sq);
+				cp = new Queen(tm, sq);
 				break;
 			case KNIGHT :
-				new Knight(tm, sq);
+				cp = new Knight(tm, sq);
 				break;
 			case ROOK :
-				new Rook(tm, sq);
+				cp =new Rook(tm, sq);
 				break;
 			case BISHOP :
-				new Bishop(tm, sq);
+				cp = new Bishop(tm, sq);
 				break;
 			default :
-				new Queen(tm, sq);
+				cp = new Queen(tm, sq);
 				JOptionPane.showMessageDialog(this, "Default to Queen",
-						"Input Exited", JOptionPane.ERROR_MESSAGE);
+						"Improper Input Exit", JOptionPane.ERROR_MESSAGE);
 		}
+		cp.firstMove = false;
 	}
 	// lame main
 	public static void main(String[] args) {
