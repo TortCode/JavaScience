@@ -39,11 +39,11 @@ public class King extends ChessPiece {
 		}
 		return false;
 	}
-	public Square castlingMiddleSquare(Square dest) {
+	private Square castlingMiddleSquare(Square dest) {
 		return GameBoard.squares[location
 				.getRow()][(location.getCol() + dest.getCol()) / 2];
 	}
-	public Square castlingRookSquare(Square dest) {
+	private Square castlingRookSquare(Square dest) {
 		int dc = colDiff(dest);
 		return GameBoard.squares[location.getRow()][(dc > 0)
 				? GameBoard.COLS - 1
