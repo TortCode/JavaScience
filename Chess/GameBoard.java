@@ -124,7 +124,6 @@ public class GameBoard extends JFrame {
 				JOptionPane.INFORMATION_MESSAGE, null, promoteOptions,
 				promoteOptions[0]);
 		Square sq = p.location;
-		p.location = null;
 		boolean tm = p.getTeam();
 		switch (newcp) {
 			case QUEEN :
@@ -139,6 +138,10 @@ public class GameBoard extends JFrame {
 			case BISHOP :
 				new Bishop(tm, sq);
 				break;
+			default :
+				new Queen(tm, sq);
+				JOptionPane.showMessageDialog(this, "Default to Queen",
+						"Input Exited", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	// lame main
