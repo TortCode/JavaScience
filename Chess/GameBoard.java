@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import javax.swing.*;
 
@@ -11,6 +10,7 @@ public class GameBoard extends JFrame {
 	static Square[][] squares = new Square[ROWS][COLS];
 	// move squares
 	private static Square src, dest;
+	// critical pieces
 	private static King wKing, bKing;
 	static Pawn passable;
 	// last piece taken
@@ -33,44 +33,41 @@ public class GameBoard extends JFrame {
 				this.add(squares[i][j]);
 			}
 		}
-		// Pawns
+		// Automatic double link provided by constructor
 		for (int j = 0; j < COLS; j++)
 			new Pawn(true, squares[1][j]);
 		for (int j = 0; j < COLS; j++)
-			new Pawn(false, squares[ROWS - 2][j]);
-		// Rooks
+			new Pawn(false, squares[6][j]);
 		new Rook(true, squares[0][0]);
-		new Rook(true, squares[0][COLS - 1]);
-		new Rook(false, squares[ROWS - 1][0]);
-		new Rook(false, squares[ROWS - 1][COLS - 1]);
-		// Knights
+		new Rook(true, squares[0][7]);
+		new Rook(false, squares[7][0]);
+		new Rook(false, squares[7][7]);
 		new Knight(true, squares[0][1]);
-		new Knight(true, squares[0][COLS - 1 - 1]);
-		new Knight(false, squares[ROWS - 1][1]);
-		new Knight(false, squares[ROWS - 1][COLS - 1 - 1]);
-		// Bishops
+		new Knight(true, squares[0][6]);
+		new Knight(false, squares[7][1]);
+		new Knight(false, squares[7][6]);
 		new Bishop(true, squares[0][2]);
-		new Bishop(true, squares[0][COLS - 1 - 2]);
-		new Bishop(false, squares[ROWS - 1][2]);
-		new Bishop(false, squares[ROWS - 1][COLS - 1 - 2]);
-		// Monarchs
+		new Bishop(true, squares[0][5]);
+		new Bishop(false, squares[7][2]);
+		new Bishop(false, squares[7][5]);
 		new Queen(true, squares[0][3]);
-		new Queen(false, squares[ROWS - 1][3]);
+		new Queen(false, squares[7][3]);
 		bKing = new King(true, squares[0][4]);
-		wKing = new King(false, squares[ROWS - 1][4]);
+		wKing = new King(false, squares[7][4]);
 		// some finishing touches
 		this.setSize(1000, 1000);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-	// square alerts board of click
+	// click handler stores legal origin and destination
+	// executes legal moves after destination selection
 	public void clicked(Square sq) {
 		if (src == null && sq.getPiece() != null) {
-			if (sq.getPiece().getTeam() == turn) {
+			ChessPiece cp = sq.getPiece();
+			if (cp.getTeam() == turn) {
 				src = sq;
 				src.setPieceHighlight(true);
-				ChessPiece cp = src.getPiece();
 				// highlight possible moves
 				for (int r = 0; r < ROWS; r++)
 					for (int c = 0; c < COLS; c++)
@@ -81,11 +78,11 @@ public class GameBoard extends JFrame {
 						}
 			}
 		} else if (src != null && dest == null) {
+			// reset highlight
 			src.setPieceHighlight(false);
 			for (int r = 0; r < ROWS; r++)
 				for (int c = 0; c < COLS; c++)
 					squares[r][c].setHighlight(false);
-
 			dest = sq;
 			ChessPiece cp = src.getPiece();
 			if (cp.isMoveLegal(dest)) {
@@ -99,7 +96,7 @@ public class GameBoard extends JFrame {
 				// is King captured
 				if (dump instanceof King) {
 					JOptionPane.showMessageDialog(this,
-							((turn) ? "Black" : "White") + " wins!", "Victory",
+							(turn ? "Black" : "White") + " wins!", "Victory",
 							JOptionPane.INFORMATION_MESSAGE);
 					System.exit(0);
 				}
@@ -134,7 +131,7 @@ public class GameBoard extends JFrame {
 				cp = new Knight(tm, sq);
 				break;
 			case ROOK :
-				cp =new Rook(tm, sq);
+				cp = new Rook(tm, sq);
 				break;
 			case BISHOP :
 				cp = new Bishop(tm, sq);
