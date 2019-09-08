@@ -60,8 +60,8 @@ public class GameBoard extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-	// click handler stores legal origin and destination
-	// executes legal moves after destination selection
+	// click handler stores origin and destination
+	// executes legal moves after dest selection
 	public void clicked(Square sq) {
 		if (src == null && sq.getPiece() != null) {
 			ChessPiece cp = sq.getPiece();
