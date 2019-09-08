@@ -30,7 +30,6 @@ public abstract class ChessPiece {
 			JOptionPane.showMessageDialog(null, "Error reading file");
 		}
 	}
-	// setters and getters
 	public boolean getTeam() {
 		return team;
 	}
