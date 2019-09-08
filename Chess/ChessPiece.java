@@ -1,11 +1,8 @@
-
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-
 import javax.swing.JOptionPane;
 
 public abstract class ChessPiece {
