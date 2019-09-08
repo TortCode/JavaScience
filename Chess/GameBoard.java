@@ -90,9 +90,8 @@ public class GameBoard extends JFrame {
 				cp.move(dest);
 				// is pawn promoted
 				if (cp instanceof Pawn
-						&& dest.getRow() == (turn ? GameBoard.ROWS - 1 : 0)) {
-					this.promotePawn((Pawn) cp);
-				}
+						&& dest.getRow() == (turn ? GameBoard.ROWS - 1 : 0))
+					promotePawn((Pawn) cp);
 				// is King captured
 				if (dump instanceof King) {
 					JOptionPane.showMessageDialog(this,
