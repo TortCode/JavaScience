@@ -5,7 +5,7 @@ public class Pawn extends ChessPiece {
 		super(tm, lc);
 	}
 
-	public boolean isMoveLegal(Square dest) {
+	public boolean isMoveLegal(Square dest, boolean testing) {
 		int dir = getTeam() ? 1 : -1; // move down for black, up for white
 		int dr = rowDiff(dest);
 		int dc = colDiff(dest);
@@ -13,9 +13,9 @@ public class Pawn extends ChessPiece {
 			return dest.getPiece() == null;
 		if (dr == dir * 1 && Math.abs(dc) == 1) {
 			// en passant check
-			if (GameBoard.passable != null
-					&& GameBoard.passable.location == enPassantSquare(dest)) {
-				GameBoard.ENPASSANT = true;
+			if (GameBoard.passable != null && GameBoard.passable.location == enPassantSquare(dest)) {
+				if (!testing)
+					GameBoard.ENPASSANT = true;
 				return true;
 			}
 			return hasEnemy(dest);

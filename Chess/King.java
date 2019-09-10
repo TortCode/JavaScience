@@ -5,7 +5,7 @@ public class King extends ChessPiece {
 		super(tm, lc);
 	}
 
-	public boolean isMoveLegal(Square dest) {
+	public boolean isMoveLegal(Square dest, boolean testing) {
 		int dr = rowDiff(dest);
 		int dc = colDiff(dest);
 		if (Math.abs(dr) <= 1 && Math.abs(dc) <= 1)
@@ -31,7 +31,7 @@ public class King extends ChessPiece {
 						legal = false;
 					undoTest(orig, dest);
 					firstMove = true; // ensure no move done yet
-					if (legal)
+					if (legal && !testing)
 						GameBoard.CASTLING = true;
 					return legal;
 				}

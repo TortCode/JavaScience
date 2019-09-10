@@ -5,7 +5,7 @@ public class Rook extends ChessPiece {
 		super(tm, lc);
 	}
 
-	public boolean isMoveLegal(Square dest) {
+	public boolean isMoveLegal(Square dest, boolean testing) {
 		int dr = rowDiff(dest);
 		int dc = colDiff(dest);
 		if (dr == 0 || dc == 0)
