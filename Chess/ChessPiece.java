@@ -34,7 +34,7 @@ public abstract class ChessPiece {
 		return team;
 	}
 	public void draw(Graphics g) {
-		g.drawImage(img, 0, 0, 125, 125, null, null);
+		g.drawImage(img, 0, 0, 110, 110, null, null);
 	}
 	// movement
 	public void move(Square dest) {
@@ -58,12 +58,8 @@ public abstract class ChessPiece {
 		for (int r = 0; r < GameBoard.ROWS; r++) {
 			for (int c = 0; c < GameBoard.COLS; c++) {
 				cp = GameBoard.squares[r][c].getPiece();
-				if (cp != null && cp.isMoveLegal(this.location)) {
-					// ensure flags deasserted
-					GameBoard.ENPASSANT = false;
-					GameBoard.CASTLING = false;
+				if (cp != null && cp.isMoveLegal(this.location, true))
 					return true;
-				}
 			}
 		}
 		return false;
@@ -106,7 +102,7 @@ public abstract class ChessPiece {
 		return dest.getCol() - location.getCol();
 	}
 
-	public abstract boolean isMoveLegal(Square dest);
+	public abstract boolean isMoveLegal(Square dest, boolean testing);
 
 	public abstract String pieceName();
 }
