@@ -15,7 +15,6 @@ public class GameBoard extends JFrame {
 	// last piece taken
 	static ChessPiece dump;
 	// flags asserted by piece upon special move validation
-	// must be deasserted after test move
 	// deasserted upon move completion
 	static boolean CASTLING = false;
 	static boolean ENPASSANT = false;
