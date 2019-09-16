@@ -35,7 +35,9 @@ public class Pawn extends ChessPiece {
 		if (Math.abs(dr) == 2)
 			GameBoard.passable = this;
 		if (GameBoard.ENPASSANT) {
-			enPassantSquare(dest).setPiece(null);
+			Square captured = enPassantSquare(dest);
+			GameBoard.dump = captured.getPiece();
+			captured.setPiece(null);
 			GameBoard.ENPASSANT = false;
 		}
 		super.move(dest);

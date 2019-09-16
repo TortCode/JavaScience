@@ -25,12 +25,11 @@ public class King extends ChessPiece {
 					move(middle);
 					if (this.underAttack())
 						legal = false;
-					undoTest(orig, middle);
 					move(dest);
 					if (this.underAttack())
 						legal = false;
-					undoTest(orig, dest);
-					firstMove = true; // ensure no move done yet
+					move(orig);
+					firstMove = true; // reset
 					if (legal && !testing)
 						GameBoard.CASTLING = true;
 					return legal;

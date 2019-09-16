@@ -13,6 +13,7 @@ public abstract class ChessPiece {
 	Square location;
 
 	public ChessPiece(boolean tm, Square lc) {
+		// put images folder inside of src folder
 		loadImage("images/" + (tm ? "b" : "w") + this.pieceName() + ".png");
 		team = tm;
 		location = lc;
@@ -45,11 +46,6 @@ public abstract class ChessPiece {
 			GameBoard.dump = cp;
 		location.setPiece(this);
 		firstMove = false;
-	}
-	public void undoTest(Square src, Square dest) {
-		src.setPiece(this);
-		this.location = src;
-		dest.setPiece(null);
 	}
 
 	// utility
