@@ -60,15 +60,11 @@ public class TortLinkedList<E> implements List<E> {
 		prev.next = new Node<E>(e, prev.next);
 		size++;
 	}
-
-	@Override
 	public boolean addAll(Collection<? extends E> c) {
 		for (E e : c)
 			this.add(e);
 		return true;
 	}
-
-	@Override
 	public boolean addAll(int index, Collection<? extends E> c) {
 		int i = index;
 		for (E e : c) {
@@ -86,8 +82,10 @@ public class TortLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean contains(Object arg0) {
-		// TODO Auto-generated method stub
+	public boolean contains(Object o) {
+		for (E e : this)
+			if (e.equals(o))
+				return true;
 		return false;
 	}
 
@@ -105,9 +103,14 @@ public class TortLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public int indexOf(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int indexOf(Object o) {
+		int i = 0;
+		for (E e : this) {
+			if (e.equals(o))
+				return i;
+			i++;
+		}
+		return -1;
 	}
 
 
@@ -132,8 +135,14 @@ public class TortLinkedList<E> implements List<E> {
 
 	@Override
 	public int lastIndexOf(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		int index = -1;
+		for (E e : this) {
+			if (e.equals(o))
+				index = i;
+			i++;
+		}
+		return index;
 	}
 
 	@Override
