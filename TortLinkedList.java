@@ -71,7 +71,7 @@ public class TortLinkedList<E> implements List<E> {
 			this.add(i, e);
 			i++;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -90,9 +90,11 @@ public class TortLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsAll(Collection<? extends E> c) {
+		for (E e : c)
+			if (!this.contains(e))
+				return false;
+		return true;
 	}
 
 	@Override
@@ -102,7 +104,7 @@ public class TortLinkedList<E> implements List<E> {
 		return getNodeAt(index).value;
 	}
 
-	@Override
+	// indexOf fxns
 	public int indexOf(Object o) {
 		int i = 0;
 		for (E e : this) {
@@ -112,7 +114,16 @@ public class TortLinkedList<E> implements List<E> {
 		}
 		return -1;
 	}
-
+	public int lastIndexOf(Object arg0) {
+		int i = 0;
+		int index = -1;
+		for (E e : this) {
+			if (e.equals(o))
+				index = i;
+			i++;
+		}
+		return index;
+	}
 
 	@Override
 	public Iterator<E> iterator() {
@@ -133,17 +144,7 @@ public class TortLinkedList<E> implements List<E> {
 		};
 	}
 
-	@Override
-	public int lastIndexOf(Object arg0) {
-		int i = 0;
-		int index = -1;
-		for (E e : this) {
-			if (e.equals(o))
-				index = i;
-			i++;
-		}
-		return index;
-	}
+	
 
 	@Override
 	public ListIterator<E> listIterator() {
@@ -158,8 +159,12 @@ public class TortLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean remove(Object arg0) {
-		// TODO Auto-generated method stub
+	public boolean remove(Object o) {
+		int i = indexOf(o);
+		if (i != -1) {
+			remove(i);
+			return true;
+		}
 		return false;
 	}
 
