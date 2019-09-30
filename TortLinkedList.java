@@ -5,6 +5,15 @@ import java.util.ListIterator;
 
 public class TortLinkedList<E> implements List<E> {
 
+	public static void main(String[] args) {
+		List<String> list = new TortLinkedList<>();
+		list.add(0, "This");
+		list.add(0, "sentence");
+		list.add(0, "is");
+		list.add(0, "backwards");
+		System.out.println(list);
+	}
+
 	// Linked List starts with dummy node w null value
 	// Last node points to null
 	private int size;
@@ -14,6 +23,7 @@ public class TortLinkedList<E> implements List<E> {
 	private static class Node<E> {
 		E value;
 		Node<E> next;
+
 		Node(E e, Node<E> next) {
 			this.value = e;
 			this.next = next;
@@ -38,6 +48,7 @@ public class TortLinkedList<E> implements List<E> {
 	public int size() {
 		return size;
 	}
+
 	public boolean isEmpty() {
 		return size == 0;
 	}
@@ -49,6 +60,7 @@ public class TortLinkedList<E> implements List<E> {
 		size++;
 		return true;
 	}
+
 	public void add(int index, E e) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException();
@@ -60,11 +72,13 @@ public class TortLinkedList<E> implements List<E> {
 		prev.next = new Node<E>(e, prev.next);
 		size++;
 	}
+
 	public boolean addAll(Collection<? extends E> c) {
 		for (E e : c)
 			this.add(e);
 		return true;
 	}
+
 	public boolean addAll(int index, Collection<? extends E> c) {
 		int i = index;
 		for (E e : c) {
@@ -74,34 +88,47 @@ public class TortLinkedList<E> implements List<E> {
 		return true;
 	}
 
-	@Override
 	public void clear() {
 		this.dummy = new Node<E>(null, null);
 		this.tail = this.dummy;
 		this.size = 0;
 	}
 
-	@Override
+	// contains fxns
 	public boolean contains(Object o) {
-		for (E e : this)
-			if (e.equals(o))
-				return true;
+		if (o == null) {
+			for (E e : this)
+				if (e == null)
+					return true;
+		} else {
+			for (E e : this)
+				if (e.equals(o))
+					return true;
+		}
 		return false;
 	}
 
-	@Override
-	public boolean containsAll(Collection<? extends E> c) {
-		for (E e : c)
-			if (!this.contains(e))
+	public boolean containsAll(Collection<?> c) {
+		for (Object o : c)
+			if (!this.contains(o))
 				return false;
 		return true;
 	}
 
-	@Override
+	// getter setter
 	public E get(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
 		return getNodeAt(index).value;
+	}
+
+	public E set(int index, E e) {
+		if (index < 0 || index >= size)
+			throw new IndexOutOfBoundsException();
+		Node<E> node = getNodeAt(index);
+		E temp = node.value;
+		node.value = e;
+		return temp;
 	}
 
 	// indexOf fxns
@@ -114,7 +141,8 @@ public class TortLinkedList<E> implements List<E> {
 		}
 		return -1;
 	}
-	public int lastIndexOf(Object arg0) {
+
+	public int lastIndexOf(Object o) {
 		int i = 0;
 		int index = -1;
 		for (E e : this) {
@@ -130,6 +158,7 @@ public class TortLinkedList<E> implements List<E> {
 		// TODO Auto-generated method stub
 		return new Iterator<E>() {
 			Node<E> curr = dummy;
+
 			@Override
 			public boolean hasNext() {
 				return curr.next != null;
@@ -144,18 +173,87 @@ public class TortLinkedList<E> implements List<E> {
 		};
 	}
 
-	
-
 	@Override
 	public ListIterator<E> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return listIterator(0);
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public ListIterator<E> listIterator(int index) {
+		if (index < 0 || index > size)
+			throw new IndexOutOfBoundsException();
+		return new ListIterator<E>() {
+			// position of next element
+			int pos = index;
+			// previous element
+			Node<E> curr = getNodeAt(index - 1);
+			// previous() or next() last called
+			boolean prevLast;
+			boolean mutable = false;
+
+			public void add(E e) {
+				mutable = false;
+				if (index == size) {
+					add(e);
+					return;
+				}
+				Node<E> prev = getNodeAt(index - 1);
+				prev.next = new Node<E>(e, prev.next);
+				size++;
+
+			}
+
+			// has fxns
+			public boolean hasNext() {
+				return pos < size;
+			}
+
+			public boolean hasPrevious() {
+				return pos > 0;
+			}
+
+			public E next() {
+				curr = curr.next;
+				pos++;
+				prevLast = false;
+				mutable = true;
+				return curr.value;
+			}
+
+			public E previous() {
+				E temp = curr.value;
+				pos--;
+				curr = getNodeAt(pos - 1);
+				prevLast = true;
+				mutable = true;
+				return temp;
+			}
+
+			// index fxns
+			public int nextIndex() {
+				return pos;
+			}
+
+			public int previousIndex() {
+				return pos - 1;
+			}
+
+			public void remove() {
+				if (!mutable)
+					throw new IllegalStateException();
+				TortLinkedList.this.remove(prevLast ? (pos - 1) : pos);
+			}
+
+			public void set(E e) {
+				if (!mutable)
+					throw new IllegalStateException();
+				if (prevLast)
+					curr.value = e;
+				else
+					curr.next.value = e;
+			}
+
+		};
 	}
 
 	@Override
@@ -194,17 +292,6 @@ public class TortLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public E set(int index, E e) {
-		if (index < 0 || index >= size)
-			throw new IndexOutOfBoundsException();
-		Node<E> node = getNodeAt(index);
-		E temp = node.value;
-		node.value = e;
-		return temp;
-	}
-
-
-	@Override
 	public List<E> subList(int arg0, int arg1) {
 		// TODO Auto-generated method stub
 		return null;
@@ -225,6 +312,19 @@ public class TortLinkedList<E> implements List<E> {
 	public <T> T[] toArray(T[] arg0) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String toString() {
+		String s = "[";
+		int i = 0;
+		for (E e : this) {
+			s += e;
+			i++;
+			if (i != size)
+				s += ", ";
+		}
+		s += "]";
+		return s;
 	}
 
 }
