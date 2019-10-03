@@ -1,17 +1,21 @@
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class TortLinkedList<E> implements List<E> {
 
 	public static void main(String[] args) {
 		List<String> list = new TortLinkedList<>();
-		list.add(0, "This");
-		list.add(0, "sentence");
-		list.add(0, "is");
-		list.add(0, "backwards");
-		System.out.println(list);
+		list.add("This");
+		list.add("sentence");
+		list.add("is");
+		list.add("backwards");
+		list.add(1, "should be after this");
+		list.addAll(2, Arrays.asList(new String[]{"hi", "bi", "die"}));
+		System.out.println(list + "" + list.size());
 	}
 
 	// Linked List starts with dummy node w null value
@@ -36,6 +40,11 @@ public class TortLinkedList<E> implements List<E> {
 		this.size = 0;
 	}
 
+	public void clear() {
+		this.dummy.next = null;
+		this.tail = this.dummy;
+		this.size = 0;
+	}
 	// returns dummy if index < 0
 	private Node<E> getNodeAt(int index) {
 		Node<E> itr = dummy;
@@ -43,16 +52,13 @@ public class TortLinkedList<E> implements List<E> {
 			itr = itr.next;
 		return itr;
 	}
-
 	// size fxns
 	public int size() {
 		return size;
 	}
-
 	public boolean isEmpty() {
 		return size == 0;
 	}
-
 	// add fxns
 	public boolean add(E e) {
 		this.tail.next = new Node<E>(e, null);
@@ -60,7 +66,6 @@ public class TortLinkedList<E> implements List<E> {
 		size++;
 		return true;
 	}
-
 	public void add(int index, E e) {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException();
@@ -72,28 +77,21 @@ public class TortLinkedList<E> implements List<E> {
 		prev.next = new Node<E>(e, prev.next);
 		size++;
 	}
-
 	public boolean addAll(Collection<? extends E> c) {
+		if (c == null)
+			throw new NullPointerException();
 		for (E e : c)
-			this.add(e);
-		return true;
+			add(e);
+		return !c.isEmpty();
 	}
-
 	public boolean addAll(int index, Collection<? extends E> c) {
-		int i = index;
-		for (E e : c) {
-			this.add(i, e);
-			i++;
-		}
-		return true;
+		if (c == null)
+			throw new NullPointerException();
+		ListIterator<E> itr = this.listIterator(index);
+		for (E e : c)
+			itr.add(e);
+		return !c.isEmpty();
 	}
-
-	public void clear() {
-		this.dummy = new Node<E>(null, null);
-		this.tail = this.dummy;
-		this.size = 0;
-	}
-
 	// contains fxns
 	public boolean contains(Object o) {
 		if (o == null) {
@@ -102,26 +100,25 @@ public class TortLinkedList<E> implements List<E> {
 					return true;
 		} else {
 			for (E e : this)
-				if (e.equals(o))
+				if (o.equals(e))
 					return true;
 		}
 		return false;
 	}
-
 	public boolean containsAll(Collection<?> c) {
+		if (c == null)
+			throw new NullPointerException();
 		for (Object o : c)
-			if (!this.contains(o))
+			if (!contains(o))
 				return false;
 		return true;
 	}
-
 	// getter setter
 	public E get(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
 		return getNodeAt(index).value;
 	}
-
 	public E set(int index, E e) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
@@ -130,133 +127,41 @@ public class TortLinkedList<E> implements List<E> {
 		node.value = e;
 		return temp;
 	}
-
 	// indexOf fxns
 	public int indexOf(Object o) {
 		int i = 0;
-		for (E e : this) {
-			if (e.equals(o))
-				return i;
-			i++;
-		}
+		if (o == null)
+			for (E e : this) {
+				if (e == null)
+					return i;
+				i++;
+			}
+		else
+			for (E e : this) {
+				if (o.equals(e))
+					return i;
+				i++;
+			}
 		return -1;
 	}
-
 	public int lastIndexOf(Object o) {
 		int i = 0;
 		int index = -1;
-		for (E e : this) {
-			if (e.equals(o))
-				index = i;
-			i++;
-		}
+		if (o == null)
+			for (E e : this) {
+				if (e == null)
+					index = i;
+				i++;
+			}
+		else
+			for (E e : this) {
+				if (o.equals(e))
+					index = i;
+				i++;
+			}
 		return index;
 	}
-
-	@Override
-	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return new Iterator<E>() {
-			Node<E> curr = dummy;
-
-			@Override
-			public boolean hasNext() {
-				return curr.next != null;
-			}
-
-			@Override
-			public E next() {
-				curr = curr.next;
-				return curr.value;
-			}
-
-		};
-	}
-
-	@Override
-	public ListIterator<E> listIterator() {
-		return listIterator(0);
-	}
-
-	@Override
-	public ListIterator<E> listIterator(int index) {
-		if (index < 0 || index > size)
-			throw new IndexOutOfBoundsException();
-		return new ListIterator<E>() {
-			// position of next element
-			int pos = index;
-			// previous element
-			Node<E> curr = getNodeAt(index - 1);
-			// previous() or next() last called
-			boolean prevLast;
-			boolean mutable = false;
-
-			public void add(E e) {
-				mutable = false;
-				if (index == size) {
-					add(e);
-					return;
-				}
-				Node<E> prev = getNodeAt(index - 1);
-				prev.next = new Node<E>(e, prev.next);
-				size++;
-
-			}
-
-			// has fxns
-			public boolean hasNext() {
-				return pos < size;
-			}
-
-			public boolean hasPrevious() {
-				return pos > 0;
-			}
-
-			public E next() {
-				curr = curr.next;
-				pos++;
-				prevLast = false;
-				mutable = true;
-				return curr.value;
-			}
-
-			public E previous() {
-				E temp = curr.value;
-				pos--;
-				curr = getNodeAt(pos - 1);
-				prevLast = true;
-				mutable = true;
-				return temp;
-			}
-
-			// index fxns
-			public int nextIndex() {
-				return pos;
-			}
-
-			public int previousIndex() {
-				return pos - 1;
-			}
-
-			public void remove() {
-				if (!mutable)
-					throw new IllegalStateException();
-				TortLinkedList.this.remove(prevLast ? (pos - 1) : pos);
-			}
-
-			public void set(E e) {
-				if (!mutable)
-					throw new IllegalStateException();
-				if (prevLast)
-					curr.value = e;
-				else
-					curr.next.value = e;
-			}
-
-		};
-	}
-
-	@Override
+	// remove fxns
 	public boolean remove(Object o) {
 		int i = indexOf(o);
 		if (i != -1) {
@@ -265,8 +170,6 @@ public class TortLinkedList<E> implements List<E> {
 		}
 		return false;
 	}
-
-	@Override
 	public E remove(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
@@ -278,26 +181,111 @@ public class TortLinkedList<E> implements List<E> {
 		size--;
 		return temp;
 	}
-
-	@Override
-	public boolean removeAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeAll(Collection<?> c) {
+		boolean changed = false;
+		for (Object o : c)
+			while (remove(o))
+				changed = true;
+		return changed;
 	}
-
-	@Override
-	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean retainAll(Collection<?> c) {
+		boolean changed = false;
+		for (E e : this) {
+			if (!c.contains(e) && remove(e))
+				changed = true;
+		}
+		return changed;
 	}
-
-	@Override
-	public List<E> subList(int arg0, int arg1) {
+	// iterators
+	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		return new Iterator<E>() {
+			Node<E> prev = dummy;
 
-	// array fxns
+			public boolean hasNext() {
+				return prev.next != null;
+			}
+			public E next() {
+				prev = prev.next;
+				return prev.value;
+			}
+
+		};
+	}
+	public ListIterator<E> listIterator() {
+		return listIterator(0);
+	}
+	public ListIterator<E> listIterator(int index) {
+		if (index < 0 || index > size)
+			throw new IndexOutOfBoundsException();
+		return new ListIterator<E>() {
+			// position of next element
+			int pos = index;
+			Node<E> prev = getNodeAt(index - 1);
+			boolean mutable = false;
+
+			// next is supported; previous is not
+			public boolean hasNext() {
+				return pos < size;
+			}
+			public boolean hasPrevious() {
+				return false;
+			}
+			public E next() {
+				if (pos == size)
+					throw new NoSuchElementException();
+				prev = prev.next;
+				pos++;
+				mutable = true;
+				return prev.value;
+			}
+			public E previous() {
+				throw new UnsupportedOperationException();
+			}
+			public int nextIndex() {
+				return pos;
+			}
+			public int previousIndex() {
+				return pos - 1;
+			}
+			// mutator
+			public void add(E e) {
+				mutable = false;
+				if (pos == size) {
+					add(e);
+					return;
+				}
+				prev.next = new Node<E>(e, prev.next);
+				size++;
+				// ensure next() returns same value
+				prev = prev.next;
+				pos++;
+			}
+			public void remove() {
+				if (!mutable)
+					throw new IllegalStateException();
+				mutable = false;
+				TortLinkedList.this.remove(pos - 1);
+				pos--;
+				prev = getNodeAt(pos - 1);
+			}
+			public void set(E e) {
+				if (!mutable)
+					throw new IllegalStateException();
+				prev.value = e;
+			}
+		};
+	}
+	// collection manipulations
+	public List<E> subList(int from, int to) {
+		if (from < 0 || to > size || from > to)
+			throw new IndexOutOfBoundsException();
+		TortLinkedList<E> list = new TortLinkedList<E>();
+		ListIterator<E> itr = this.listIterator(from);
+		for (int i = from; i < to; i++)
+			list.add(itr.next());
+		return list;
+	}
 	public Object[] toArray() {
 		Object[] arr = new Object[size];
 		int i = 0;
@@ -307,18 +295,25 @@ public class TortLinkedList<E> implements List<E> {
 		}
 		return arr;
 	}
-
-	@Override
-	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public <T> T[] toArray(T[] a) {
+		if (a == null)
+			throw new NullPointerException();
+		if (this.size <= a.length) {
+			int i = 0;
+			for (E e : this) {
+				a[i] = (T) e;
+				i++;
+			}
+			return a;
+		}
+		return (T[]) this.toArray();
 	}
-
 	public String toString() {
 		String s = "[";
 		int i = 0;
 		for (E e : this) {
-			s += e;
+			s += (e == null) ? "null" : e;
 			i++;
 			if (i != size)
 				s += ", ";
@@ -326,5 +321,4 @@ public class TortLinkedList<E> implements List<E> {
 		s += "]";
 		return s;
 	}
-
 }
