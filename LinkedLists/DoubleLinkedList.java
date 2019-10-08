@@ -1,3 +1,5 @@
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -5,11 +7,22 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 public class DoubleLinkedList<E> implements List<E> {
+	
+	public static void main(String[] args) {
+		List<String> list = new DoubleLinkedList<>();
+		list.add("This");
+		list.add("sentence");
+		list.add("is");
+		list.add("backwards");
+		list.add(1, "should be after this");
+		list.addAll(1, Arrays.asList(new String[]{"hi", "bi", "die"}));
+		System.out.println(list + "" + list.size());
+	}
 
-	int size;
+	public int size;
 	// dummies
-	Node<E> head;
-	Node<E> tail;
+	public Node<E> head;
+	public Node<E> tail;
 
 	private static class Node<E> {
 		E value;
@@ -31,6 +44,12 @@ public class DoubleLinkedList<E> implements List<E> {
 		this.tail.prev = head;
 	}
 
+	public void clear() {
+		this.size = 0;
+		this.head.next = tail;
+		this.tail.prev = head;
+	}
+
 	private Node<E> getNodeAt(int index) {
 		Node<E> itr = head;
 		for (int i = 0; i <= index; i++)
@@ -38,6 +57,16 @@ public class DoubleLinkedList<E> implements List<E> {
 		return itr;
 	}
 
+	// size fxns
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	public int size() {
+		return size;
+	}
+
+	// add fxns
 	public boolean add(E e) {
 		Node<E> node = new Node<E>(e, tail.prev, tail);
 		// relink
@@ -55,10 +84,11 @@ public class DoubleLinkedList<E> implements List<E> {
 			return;
 		}
 		Node<E> after = getNodeAt(index);
-		Node<E> node = new Node<E>(e, after.prev, after);
+		Node<E> before = after.prev;
+		Node<E> node = new Node<E>(e, before, after);
 		// relink
-		after.prev.next = node;
 		after.prev = node;
+		before.next = node;
 		size++;
 	}
 
@@ -70,17 +100,16 @@ public class DoubleLinkedList<E> implements List<E> {
 		return !c.isEmpty();
 	}
 
-	public boolean addAll(int arg0, Collection<? extends E> arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addAll(int index, Collection<? extends E> c) {
+		if (c == null)
+			throw new NullPointerException();
+		ListIterator<E> itr = this.listIterator(index);
+		for (E e : c)
+			itr.add(e);
+		return !c.isEmpty();
 	}
 
-	public void clear() {
-		this.size = 0;
-		this.head.next = tail;
-		this.tail.prev = head;
-	}
-
+	// contains fxns
 	public boolean contains(Object o) {
 		if (o == null) {
 			for (E e : this)
@@ -94,17 +123,32 @@ public class DoubleLinkedList<E> implements List<E> {
 		return false;
 	}
 
-	public boolean containsAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsAll(Collection<?> c) {
+		if (c == null)
+			throw new NullPointerException();
+		for (Object o : c)
+			if (!this.contains(o))
+				return false;
+		return true;
 	}
 
+	// setter/getter
 	public E get(int index) {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
 		return getNodeAt(index).value;
 	}
 
+	public E set(int index, E e) {
+		if (index < 0 || index >= size)
+			throw new IndexOutOfBoundsException();
+		Node<E> node = getNodeAt(index);
+		E temp = node.value;
+		node.value = e;
+		return temp;
+	}
+
+	// indexOf fxns
 	public int indexOf(Object o) {
 		int i = 0;
 		if (o == null)
@@ -122,10 +166,28 @@ public class DoubleLinkedList<E> implements List<E> {
 		return -1;
 	}
 
-	public boolean isEmpty() {
-		return size == 0;
+	public int lastIndexOf(Object o) {
+		int i = size - 1;
+		// last element
+		Node<E> itr = this.tail.prev;
+		if (o == null)
+			while (itr != head) {
+				if (itr.value == null)
+					return i;
+				itr = itr.prev;
+				i--;
+			}
+		else
+			while (itr != head) {
+				if (o.equals(itr.value))
+					return i;
+				itr = itr.prev;
+				i--;
+			}
+		return -1;
 	}
 
+	// iterator fxns
 	public Iterator<E> iterator() {
 		return new Iterator<E>() {
 			Node<E> before = head;
@@ -144,11 +206,6 @@ public class DoubleLinkedList<E> implements List<E> {
 		};
 	}
 
-	public int lastIndexOf(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public ListIterator<E> listIterator() {
 		return listIterator(0);
 	}
@@ -161,6 +218,7 @@ public class DoubleLinkedList<E> implements List<E> {
 			Node<E> after = getNodeAt(index);
 			Node<E> before = after.prev;
 			Node<E> curr = null;
+
 			public void add(E e) {
 				curr = null;
 				Node<E> node = new Node<E>(e, before, after);
@@ -169,7 +227,7 @@ public class DoubleLinkedList<E> implements List<E> {
 				after.prev = node;
 				// advance one
 				after = after.next;
-				before = before.next;
+				before = after.prev;
 				nextPos++;
 				size++;
 			}
@@ -204,7 +262,7 @@ public class DoubleLinkedList<E> implements List<E> {
 				curr = before;
 				after = after.prev;
 				before = before.prev;
-				nextPos++;
+				nextPos--;
 				return curr.value;
 			}
 
@@ -221,8 +279,8 @@ public class DoubleLinkedList<E> implements List<E> {
 				} else {
 					after = curr.next;
 				}
-				curr.prev.next = curr.next;
-				curr.next.prev = curr.prev;
+				before.next = curr.next;
+				after.prev = curr.prev;
 				curr = null;
 				size--;
 			}
@@ -232,65 +290,103 @@ public class DoubleLinkedList<E> implements List<E> {
 					throw new IllegalStateException();
 				curr.value = e;
 			}
-			
+
 		};
 	}
 
-	@Override
-	public boolean remove(Object arg0) {
-		// TODO Auto-generated method stub
+	// remove fxns
+	public boolean remove(Object o) {
+		ListIterator<E> itr = this.listIterator();
+		if (o == null)
+			while (itr.hasNext()) {
+				if (itr.next() == null) {
+					itr.remove();
+					return true;
+				}
+			}
+		else
+			while (itr.hasNext()) {
+				if (o.equals(itr.next())) {
+					itr.remove();
+					return true;
+				}
+			}
 		return false;
 	}
 
-	@Override
-	public E remove(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public E set(int index, E e) {
-		if (index < 0 || index >= size)
-			throw new IndexOutOfBoundsException();
+	public E remove(int index) {
 		Node<E> node = getNodeAt(index);
 		E temp = node.value;
-		node.value = e;
+		node.prev.next = node.next;
+		node.next.prev = node.prev;
+		size--;
 		return temp;
 	}
 
-	@Override
-	public int size() {
-		return size;
+	public boolean removeAll(Collection<?> c) {
+		boolean changed = false;
+		for (Object o : c)
+			while (remove(o))
+				changed = true;
+		return changed;
 	}
 
-	@Override
-	public List<E> subList(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean retainAll(Collection<?> c) {
+		boolean changed = false;
+		for (E e : this) {
+			if (!c.contains(e)) {
+				remove(e);
+				changed = true;
+			}
+		}
+		return changed;
 	}
 
-	@Override
+	// collection manip
+	public List<E> subList(int from, int to) {
+		if (from < 0 || to > size || from > to)
+			throw new IndexOutOfBoundsException();
+		TortLinkedList<E> list = new TortLinkedList<E>();
+		ListIterator<E> itr = this.listIterator(from);
+		for (int i = from; i < to; i++)
+			list.add(itr.next());
+		return list;
+	}
+
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] arr = new Object[size];
+		int i = 0;
+		for (E e : this) {
+			arr[i] = e;
+			i++;
+		}
+		return arr;
 	}
 
-	@Override
-	public <T> T[] toArray(T[] arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> T[] toArray(T[] a) {
+		if (a == null)
+			throw new NullPointerException();
+		if (this.size <= a.length) {
+			int i = 0;
+			for (E e : this) {
+				a[i] = (T) e;
+				i++;
+			}
+			return a;
+		}
+		return (T[]) this.toArray();
 	}
 
+	public String toString() {
+		String s = "[";
+		int i = 0;
+		for (E e : this) {
+			s += (e == null) ? "null" : e;
+			i++;
+			if (i != size)
+				s += ", ";
+		}
+		s += "]";
+		return s;
+	}
 }
