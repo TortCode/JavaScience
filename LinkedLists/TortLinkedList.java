@@ -109,7 +109,7 @@ public class TortLinkedList<E> implements List<E> {
 		if (c == null)
 			throw new NullPointerException();
 		for (Object o : c)
-			if (!contains(o))
+			if (!this.contains(o))
 				return false;
 		return true;
 	}
@@ -191,8 +191,10 @@ public class TortLinkedList<E> implements List<E> {
 	public boolean retainAll(Collection<?> c) {
 		boolean changed = false;
 		for (E e : this) {
-			if (!c.contains(e) && remove(e))
+			if (!c.contains(e)) {
+				remove(e);
 				changed = true;
+			}
 		}
 		return changed;
 	}
