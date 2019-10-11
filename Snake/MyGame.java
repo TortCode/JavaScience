@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JOptionPane;
 
+@SuppressWarnings("serial")
 public class MyGame extends SnakeGame{
 	//things you inherited from SnakeGame
 	//protected Snake player;
@@ -19,7 +20,6 @@ public class MyGame extends SnakeGame{
 	}
 	
 	public void gameFrame(){		
-			player.addFirst();
 			player.addFirst();
 			player.removeLast();
 			

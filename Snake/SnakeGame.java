@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public abstract class SnakeGame extends JPanel{
 	private BufferedImage img;
 	private Graphics crayon;
