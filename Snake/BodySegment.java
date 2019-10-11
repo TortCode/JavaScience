@@ -26,8 +26,7 @@ public class BodySegment {
 	
 	
 	public boolean isTouching( BodySegment sp){
-	
-			return false;		
+		return sp.xPos == this.xPos && sp.yPos == this.yPos;		
 	}
 	
 	//each BodySegment knows how to draw himself :)
