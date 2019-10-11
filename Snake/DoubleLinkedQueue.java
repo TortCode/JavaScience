@@ -19,7 +19,7 @@ public class DoubleLinkedQueue<E> implements Iterable<E> {
 		}
 	}
 
-	DoubleLinkedQueue() {
+	public DoubleLinkedQueue() {
 		size = 0;
 		this.head = new Node<E>(null, null, null);
 		this.tail = new Node<E>(null, null, null);
