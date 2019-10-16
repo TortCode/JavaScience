@@ -37,8 +37,8 @@ public class DoubleLinkedQueue<E> implements Iterable<E> {
 	}
 
 	public void remove() {
-		// have links bypass first element
 		head.next = head.next.next;
+		// clean up prev ptr
 		head.next.prev = head;
 		size--;
 	}
@@ -46,6 +46,7 @@ public class DoubleLinkedQueue<E> implements Iterable<E> {
 	public int size() {
 		return size;
 	}
+
 	// allows for-each loop
 	public Iterator<E> iterator() {
 		return new Iterator<E>() {
@@ -54,6 +55,7 @@ public class DoubleLinkedQueue<E> implements Iterable<E> {
 			public boolean hasNext() {
 				return itr.next != tail;
 			}
+
 			public E next() {
 				itr = itr.next;
 				return itr.value;
