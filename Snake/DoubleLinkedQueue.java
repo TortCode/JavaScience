@@ -35,6 +35,14 @@ public class DoubleLinkedQueue<E> implements Iterable<E> {
 		tail.prev = node;
 		size++;
 	}
+	
+	public E first() {
+		return head.next.value;
+	}
+	
+	public E last() {
+		return tail.prev.value;
+	}
 
 	public void remove() {
 		head.next = head.next.next;

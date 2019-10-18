@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.*;
+import java.awt.event.KeyListener;
 
 public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener {
 	public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
@@ -38,7 +38,24 @@ public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener
 		for (BodySegment seg : this)
 			seg.draw(g);
 	}
+	
+	public boolean isTouchingWall() {
+		BodySegment head = this.last();
+		int x = head.getXPos();
+		int y = head.getYPos();
+		return x < 0 || y < 0 || y >= SnakeGame.HEIGHT || x >= SnakeGame.WIDTH;
+	}
 
+	public boolean isOverlapping() {
+		BodySegment head = this.last();
+		for (BodySegment seg : this) {
+			if (seg == head)
+				break;
+			if (head.isTouching(seg))
+				return true;
+		}
+		return false;
+	}
 	public boolean isTouching(BodySegment sp) {
 		// if (sp == null) throw new NullPointerException();
 		for (BodySegment seg : this)
@@ -78,3 +95,5 @@ public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener
 	public void keyTyped(KeyEvent e) {
 	}
 }
+
+
