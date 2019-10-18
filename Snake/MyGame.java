@@ -17,12 +17,11 @@ public class MyGame extends SnakeGame {
 	}
 
 	public void gameFrame() {
+		// grow by NOT removing last
+		if(player.isTouching(food)) placeFood();
+		else player.removeLast();
 		player.addFirst();
-		player.removeLast();
 		
-		if(player.isTouching(food)) {
-			
-		}
 		drawGame();// do this at some point
 
 	}
