@@ -2,7 +2,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener {
+public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener {
 	public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
 	// give change in coordinate based on direction
 	private static final int[] deltaX = { 0, BodySegment.SIZE, 0, -BodySegment.SIZE };

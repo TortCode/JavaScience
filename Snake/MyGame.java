@@ -30,7 +30,7 @@ public class MyGame extends SnakeGame{
 		player.addFirst();
 		
 		score.setText("Score: " + player.size());
-		timer.setText("Time: " + (System.currentTimeMillis()-startTime)/1000);
+		timer.setText("Time: " + (System.currentTimeMillis()-startTime)/1000.0);
 		drawGame();// do this at some point
 
 	}
