@@ -1,5 +1,3 @@
-//package forKids;
-
 import java.awt.Color;
 import java.awt.Graphics;
 
