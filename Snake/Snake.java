@@ -22,6 +22,7 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 
 	// public int size() already implemented by parent
 
+	// addFirst adds to end of internal container
 	public void addFirst() {
 		headx += deltaX[direction];
 		heady += deltaY[direction];
@@ -29,6 +30,7 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 		turningAllowed = true;
 	}
 
+	// removeLast removes from beginning of internal container
 	public void removeLast() {
 		this.remove();
 	}
@@ -39,18 +41,18 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 	}
 	
 	public boolean isTouchingWall() {
-		BodySegment head = this.last();
-		int x = head.getXPos();
-		int y = head.getYPos();
+		BodySegment last = this.last();
+		int x = last.getXPos();
+		int y = last.getYPos();
 		return x < 0 || y < 0 || y >= SnakeGame.HEIGHT || x >= SnakeGame.WIDTH;
 	}
 
 	public boolean isOverlapping() {
-		BodySegment head = this.last();
+		BodySegment last = this.last();
 		for (BodySegment seg : this) {
-			if (seg == head)
+			if (seg == last)
 				break;
-			if (head.isTouching(seg))
+			if (last.isTouching(seg))
 				return true;
 		}
 		return false;
