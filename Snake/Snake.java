@@ -40,6 +40,7 @@ public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener
 	}
 
 	public boolean isTouching(BodySegment sp) {
+		if (sp == null) throw new NullPointerException();
 		for (BodySegment seg : this)
 			if(seg.isTouching(sp))
 				return true;
