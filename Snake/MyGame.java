@@ -1,5 +1,6 @@
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class MyGame extends SnakeGame{
@@ -7,12 +8,13 @@ public class MyGame extends SnakeGame{
 	//protected Snake player;
 	//protected BodySegment food;
 	//protected double waitSeconds;
+	private long startTime;
 	
 	public MyGame(){
 		super();
 		setBG(new Color(100,100,0));
 		setGridColor( new Color(0,255,255,100));
-		
+		startTime = System.currentTimeMillis();
 		playGame();
 	}
 	
@@ -27,6 +29,8 @@ public class MyGame extends SnakeGame{
 		else player.removeLast();
 		player.addFirst();
 		
+		score.setText("Score: " + player.size());
+		timer.setText("Time: " + (System.currentTimeMillis()-startTime)/1000);
 		drawGame();// do this at some point
 
 	}

@@ -34,7 +34,6 @@ public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener
 	}
 
 	public void draw(Graphics g) {
-		g.drawString("" + size(), headx, heady);
 		for (BodySegment seg : this)
 			seg.draw(g);
 	}
@@ -95,5 +94,3 @@ public class Snake extends DoubleLinkedQueue<BodySegment> implements KeyListener
 	public void keyTyped(KeyEvent e) {
 	}
 }
-
-

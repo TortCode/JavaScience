@@ -7,7 +7,7 @@ public class BodySegment {
 	// You will need a variable for this
 
 	public static final int SIZE = 15;
-	public Color hue = Color.green;
+	private Color hue = Color.green;
 	public static int nextID = 0;
 	public int myID;
 	private int xPos, yPos;
@@ -32,13 +32,21 @@ public class BodySegment {
 	public int getYPos() {
 		return yPos;
 	}
+	
+	public Color getHue() {
+		return hue;
+	}
+
+	public void setHue(Color hue) {
+		this.hue = hue;
+	}
 
 	// each BodySegment knows how to draw himself :)
 	public void draw(Graphics g) {
 		g.setColor(hue);
 		g.fillOval(xPos, yPos, SIZE, SIZE);
 		// just for testing purposes, you can take this out later
-		g.setColor(Color.BLACK);
-		g.drawString("" + myID, xPos + SIZE / 4, yPos + SIZE);
+		//g.setColor(Color.BLACK);
+		//g.drawString("" + myID, xPos + SIZE / 4, yPos + SIZE);
 	}
 }
