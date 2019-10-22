@@ -26,6 +26,6 @@ public class ScoreRecord implements Comparable<ScoreRecord>{
 	}
 
 	public int compareTo(ScoreRecord sr) {
-		return this.score - sr.score;
+		return sr.score - this.score;
 	}
 }

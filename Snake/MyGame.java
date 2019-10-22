@@ -1,6 +1,6 @@
 import java.awt.Color;
+import java.io.IOException;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class MyGame extends SnakeGame{
@@ -20,7 +20,9 @@ public class MyGame extends SnakeGame{
 	}
 	
 	public void gameFrame() {
-		if(gameOver) return;
+		if(gameOver) {
+			return;
+		}
 		// grow by NOT removing last
 		if(player.isTouching(food)) placeFood();
 		else player.removeLast();
@@ -29,6 +31,11 @@ public class MyGame extends SnakeGame{
 		// lose by touching self or wall
 		if (player.isOverlapping() || player.isTouchingWall()) {
 			gameOver = true;
+			try {
+				new ScoreFrame(new ScoreRecord("bob", (System.currentTimeMillis()-startTime)/1000.0, player.size()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			JOptionPane.showMessageDialog(null, "Ha! Loser! Go back to Minesweeper!");
 		}
 		score.setText("Score: " + player.size());

@@ -71,5 +71,17 @@ public class DoubleLinkedList<E> implements Iterable<E> {
 
 		};
 	}
+	
+	public String toString() {
+		String ret = "[";
+		boolean first = true;
+		for (E e : this) {
+			if (!first)
+				ret += ", ";
+			first = false;
+			ret += e.toString();
+		}
+		return ret + "]";
+	}
 
 }
