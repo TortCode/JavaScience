@@ -25,7 +25,11 @@ public class ScoreRecord implements Comparable<ScoreRecord>{
 		return "Username: " + username + "\nTime: " + time + "\nScore: " + score;
 	}
 
+	// orders from greatest to least by score
+	// then by least to greatest by time
 	public int compareTo(ScoreRecord sr) {
+		if (sr.score == this.score)
+			return (this.time < sr.time) ? -1 : 1;
 		return sr.score - this.score;
 	}
 }

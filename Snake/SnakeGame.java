@@ -18,6 +18,7 @@ public abstract class SnakeGame extends JPanel {
 
 	protected Color bgColor = Color.BLACK;
 	protected Color gridColor = new Color(25, 25, 25, 100);
+	private static final Color displayColor = new Color(0x888888);
 
 	protected Snake player;
 	protected BodySegment food;
@@ -31,7 +32,7 @@ public abstract class SnakeGame extends JPanel {
 	public abstract void gameFrame();
 
 	public SnakeGame() {
-		this(.1);
+		this(.05);
 	}
 
 	public SnakeGame(double delay) {
@@ -90,8 +91,8 @@ public abstract class SnakeGame extends JPanel {
 
 		// format timer and score
 		Font f = new Font(Font.MONOSPACED, Font.BOLD, 25);
-		timer.setBackground(Color.GRAY.brighter());
-		score.setBackground(Color.GRAY.brighter());
+		timer.setBackground(displayColor);
+		score.setBackground(displayColor);
 		timer.setFont(f);
 		score.setFont(f);
 		timer.setHorizontalAlignment(JTextField.CENTER);
@@ -124,7 +125,7 @@ public abstract class SnakeGame extends JPanel {
 		int xMult = (int) (Math.random() * (WIDTH / BodySegment.SIZE - 2)) + 1;
 		int yMult = (int) (Math.random() * (HEIGHT / BodySegment.SIZE - 2)) + 1;
 		food = new BodySegment(xMult * BodySegment.SIZE, yMult * BodySegment.SIZE);
-		food.setHue(Color.RED);
+		food.setHue(new Color(0xBB33333));
 	}
 
 	public void playGame() {

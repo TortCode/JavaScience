@@ -7,6 +7,7 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 	// give change in coordinate based on direction
 	private static final int[] deltaX = { 0, BodySegment.SIZE, 0, -BodySegment.SIZE };
 	private static final int[] deltaY = { -BodySegment.SIZE, 0, BodySegment.SIZE, 0 };
+	// properties of head of snake
 	private int direction;
 	private int headx = SnakeGame.WIDTH / 2, heady = SnakeGame.HEIGHT / 2;
 	// FLAG to prevent U-turn by rapidly pressing two keys
@@ -40,6 +41,7 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 			seg.draw(g);
 	}
 	
+	// NOTE : last node is the head of the snake
 	public boolean isTouchingWall() {
 		BodySegment last = this.last();
 		int x = last.getXPos();

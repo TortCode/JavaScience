@@ -7,7 +7,7 @@ public class BodySegment {
 	// You will need a variable for this
 
 	public static final int SIZE = 15;
-	private Color hue = Color.green;
+	private Color hue = new Color(0x22BB77);
 	public static int nextID = 0;
 	public int myID;
 	private int xPos, yPos;
