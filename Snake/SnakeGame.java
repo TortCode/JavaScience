@@ -46,7 +46,7 @@ public abstract class SnakeGame extends JPanel {
 			delay = .04;
 			break;
 		case 3:
-			BodySegment.SIZE /= 2;
+			BodySegment.SIZE = 8;
 			delay = .02;
 			break;
 		}
