@@ -22,7 +22,7 @@ public class ScoreRecord implements Comparable<ScoreRecord>{
 	}
 
 	public String toString() {
-		return "Username: " + username + "\nTime: " + time + "\nScore: " + score;
+		return "Username: " + username + " | Time: " + time + " | Score: " + score;
 	}
 
 	// orders from greatest to least by score

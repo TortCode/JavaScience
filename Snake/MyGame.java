@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 public class MyGame extends SnakeGame {
 	private boolean gameOver = false;
 	private long startTime;
+	private double time;
 
 	public MyGame() {
 		super();
@@ -25,20 +26,20 @@ public class MyGame extends SnakeGame {
 			player.removeLast();
 		player.addFirst();
 
+		time = (System.currentTimeMillis() - startTime) / 1000.0;
 		// lose by touching self or wall
 		if (player.isOverlapping() || player.isTouchingWall()) {
-			gameOver = true;
-			double finish = (System.currentTimeMillis() - startTime) / 1000.0;
+			gameOver = true;;
 			String user = JOptionPane.showInputDialog("Enter your username");
 			if (user == null || user.equals("")) user = "Anonymous";
 			
-			new ScoreFrame(new ScoreRecord(user, finish, player.size()));
+			new ScoreFrame(new ScoreRecord(user, time, player.size()));
 			JOptionPane.showMessageDialog(null, "You scored " + player.size() + " points.");
 		}
 		
 		// curr game info
 		score.setText("Score: " + player.size());
-		timer.setText("Time: " + (System.currentTimeMillis() - startTime) / 1000.0);
+		timer.setText("Time: " + time);
 		drawGame();// do this at some point
 
 	}

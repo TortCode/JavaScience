@@ -32,11 +32,24 @@ public abstract class SnakeGame extends JPanel {
 	public abstract void gameFrame();
 
 	public SnakeGame() {
-		this(.05);
-	}
-
-	public SnakeGame(double delay) {
 		super();
+		int option = JOptionPane.showOptionDialog(null, "Choose an option", "Difficulty Level", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, diffOptions, diffOptions[3]);
+		double delay = 1;
+		switch (option) {
+		case 0:
+			delay = .08;
+			break;
+		case 1:
+			delay = .06;
+			break;
+		case 2:
+			delay = .04;
+			break;
+		case 3:
+			BodySegment.SIZE /= 2;
+			delay = .02;
+			break;
+		}
 		waitSeconds = delay;
 
 		img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);

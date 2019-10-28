@@ -61,7 +61,8 @@ public class ScoreFrame extends JFrame {
 		}
 
 		// put the current record in the correct spot in your data structure
-		theScores.insert(current);
+		if (current.score > 3)
+			theScores.insert(current);
 		// display the records <using display.append()>
 		int i = 1;
 		for (ScoreRecord sr : theScores) {
@@ -77,11 +78,8 @@ public class ScoreFrame extends JFrame {
 	public void writeToFile() {
 		try {
 			PrintWriter pw = openFileForWriting();
-			for (ScoreRecord sr : theScores) {
-				System.out.println(sr.fileFormat());
+			for (ScoreRecord sr : theScores)
 				pw.print(sr.fileFormat() + "\r\n");
-			}
-			pw.flush();
 			pw.close();
 		} catch (Exception ex) {
 			System.out.println("ERROR!!?");
