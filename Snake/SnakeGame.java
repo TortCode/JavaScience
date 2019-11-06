@@ -24,6 +24,7 @@ public abstract class SnakeGame extends JPanel {
 	protected BodySegment food;
 	protected double waitSeconds;
 	public static String[] diffOptions = { "Easy", "Medium", "Hard", "Impossible" };
+	protected String diffLevel;
 
 	// walls
 	protected JPanel fillerH, fillerV, fillerV2;
@@ -35,19 +36,23 @@ public abstract class SnakeGame extends JPanel {
 		super();
 		int option = JOptionPane.showOptionDialog(null, "Choose an option", "Difficulty Level", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, diffOptions, diffOptions[3]);
 		double delay = 1;
+		diffLevel = diffOptions[option];
+		ScoreFrame.FILENAME = "topScores" + diffLevel + ".txt";
+		ScoreFrame.OUTPUTFILENAME = "topScores" + diffLevel + ".txt";
 		switch (option) {
 		case 0:
-			delay = .08;
-			break;
-		case 1:
 			delay = .06;
 			break;
-		case 2:
+		case 1:
 			delay = .04;
+			break;
+		case 2:
+			BodySegment.SIZE = 12;
+			delay = .02;
 			break;
 		case 3:
 			BodySegment.SIZE = 8;
-			delay = .02;
+			delay = .01;
 			break;
 		}
 		waitSeconds = delay;

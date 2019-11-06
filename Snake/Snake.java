@@ -75,15 +75,19 @@ public class Snake extends DoubleLinkedList<BodySegment> implements KeyListener 
 		int dir = direction;
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
+		case KeyEvent.VK_W:
 			dir = UP;
 			break;
 		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_S:
 			dir = DOWN;
 			break;
 		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_D:
 			dir = RIGHT;
 			break;
 		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_A:
 			dir = LEFT;
 			break;
 		}

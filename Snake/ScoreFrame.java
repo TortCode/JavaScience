@@ -9,8 +9,8 @@ public class ScoreFrame extends JFrame {
 
 	// private member variables
 	public static final String FILEDIR = "C:/PatelSnakeScores";// <<<<<<<Change this to include your last name
-	public static final String FILENAME = "topScores.txt";
-	public static final String OUTPUTFILENAME = "topScores.txt";
+	public static String FILENAME = "topScores.txt";
+	public static String OUTPUTFILENAME = "topScores.txt";
 	public static final int WIDTH = 500, HEIGHT = 700;
 
 	private JTextArea display; // you will append the scores into here
@@ -48,10 +48,12 @@ public class ScoreFrame extends JFrame {
 			BufferedReader br = openFileForReading();
 			if (br != null) {// if the file exists, read from it
 				String input = br.readLine();
+				int i = 1;
 				if (!"".equals(input))
-					while (input != null) {
+					while (i < 40 && input != null) {
 						theScores.insert(new ScoreRecord(input));
 						input = br.readLine();
+						i++;
 					}
 				br.close();
 			}
@@ -61,8 +63,7 @@ public class ScoreFrame extends JFrame {
 		}
 
 		// put the current record in the correct spot in your data structure
-		if (current.score > 3)
-			theScores.insert(current);
+		theScores.insert(current);
 		// display the records <using display.append()>
 		int i = 1;
 		for (ScoreRecord sr : theScores) {
