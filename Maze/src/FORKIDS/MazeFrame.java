@@ -514,7 +514,7 @@ public class MazeFrame extends JFrame
 		
 		if (adj == null)
 			return;
-		if (!head.isBlockedDir(dir)) {
+		if (!head.isBlockedDir(dir) && adj.getPly() != enemy) {
 			if (adj.getPly() == 0) { // into blank
 				head.setStatus(head.getStatus());
 				mej.push(adj);
