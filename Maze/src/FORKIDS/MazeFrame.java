@@ -496,48 +496,47 @@ public class MazeFrame extends JFrame
 	}
 
 	private void playerMove(int player, int dir) {
-		CellStack mej, tej;
+		CellStack mejico, tejas;
 		Color pCo;
 		if (player == 1) {
-			tej = mex;
-			mej = tex;
+			tejas = mex;
+			mejico = tex;
 			pCo = p1;
 		} else {
-			tej = tex;
-			mej = mex;
+			tejas = tex;
+			mejico = mex;
 			pCo = p2;
 		}
 		int enemy = player % 2 + 1;
-		MazeCell bob = mej.peek();
-		MazeCell joe = getNeighbor(bob, dir);
-		if (joe == null)
+		MazeCell sombrero = mejico.peek();
+		MazeCell castanet = getNeighbor(sombrero, dir);
+		if (castanet == null)
 			return;
-		if (!bob.isBlockedDir(dir) && joe.getPly() != enemy) {
-			if (joe.getPly() == 0) { // into blank
-				bob.setStatus(bob.getStatus());
-				mej.push(joe);
-				joe.setPly(player, pCo);
-			} else if (joe.getPly() == player) { // into own
-				while (mej.peek() != joe)
-					mej.pop().setPly(0, null);
+		if (!sombrero.isBlockedDir(dir) && castanet.getPly() != enemy) {
+			if (castanet.getPly() == 0) { // into blank
+				sombrero.setStatus(sombrero.getStatus());
+				mejico.push(castanet);
+				castanet.setPly(player, pCo);
+			} else if (castanet.getPly() == player) { // into own
+				while (mejico.peek() != castanet)
+					mejico.pop().setPly(0, null);
 			}
 		}
-		if (joe.getPly() == enemy) {
-			if (!tej.isEmpty() && joe == tej.peek()) { // into enemy head
-				for (int i = 0; i < ROWS / 5; i++)
-					if (!tej.isEmpty())
-						tej.pop().setPly(0, null);
+		if (castanet.getPly() == enemy) {
+			if (!tejas.isEmpty() && castanet == tejas.peek()) { // into enemy head
+				for (int i = 0; i < ROWS / 5 && !tejas.isEmpty(); i++)
+					tejas.pop().setPly(0, null);
 			} else {
-				MazeCell jim = getNeighbor(joe, dir);
-				if (jim == null)
+				MazeCell maraca = getNeighbor(castanet, dir);
+				if (maraca == null)
 					return;
-				if (jim.getPly() == 0) { // able to skip over
-					bob.setStatus(bob.getStatus());
-					mej.push(jim);
-					jim.setPly(player, pCo);
-				} else if (jim.getPly() == player) { // skipping back
-					while (mej.peek() != jim)
-						mej.pop().setPly(0, null);
+				if (maraca.getPly() == 0) { // able to skip over
+					sombrero.setStatus(sombrero.getStatus());
+					mejico.push(maraca);
+					maraca.setPly(player, pCo);
+				} else if (maraca.getPly() == player) { // skipping back
+					while (mejico.peek() != maraca)
+						mejico.pop().setPly(0, null);
 				}
 			}
 		}
