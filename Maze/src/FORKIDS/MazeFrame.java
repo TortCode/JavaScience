@@ -514,7 +514,7 @@ public class MazeFrame extends JFrame
 			return;
 		if (!sombrero.isBlockedDir(dir) && castanet.getPly() != enemy) {
 			if (castanet.getPly() == 0) { // into blank
-				sombrero.setStatus(sombrero.getStatus());
+				//sombrero.setStatus(sombrero.getStatus());
 				mejico.push(castanet);
 				castanet.setPly(player, pCo);
 			} else if (castanet.getPly() == player) { // into own
@@ -523,7 +523,8 @@ public class MazeFrame extends JFrame
 			}
 		}
 		if (castanet.getPly() == enemy) {
-			if (!tejas.isEmpty() && castanet == tejas.peek()) { // into enemy head
+			if (!tejas.isEmpty() && castanet == tejas.peek()) { // into enemy
+																// head
 				for (int i = 0; i < ROWS / 5 && !tejas.isEmpty(); i++)
 					tejas.pop().setPly(0, null);
 			} else {
@@ -543,11 +544,12 @@ public class MazeFrame extends JFrame
 	}
 
 	private void playerMove(int dir) {
-		if (getNeighbor(mex.peek(), dir) != null
-				&& !mex.peek().isBlockedDir(dir)) {
-			mex.peek().setStatus(mex.peek().getStatus());
-			mex.push(getNeighbor(mex.peek(), dir));
-			mex.peek().setPStat(true);
+		MazeCell sombrero = mex.peek();
+		MazeCell castanet = getNeighbor(sombrero, dir);
+		if (castanet != null && !sombrero.isBlockedDir(dir)) {
+			sombrero.setStatus(sombrero.getStatus());
+			mex.push(castanet);
+			castanet.setPStat(true);
 		}
 	}
 
