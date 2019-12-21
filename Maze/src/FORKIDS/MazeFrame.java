@@ -150,7 +150,7 @@ public class MazeFrame extends JFrame
 	private void instantiateCells() {
 
 		stagePreset = BORING;
-		mode = P2;
+		mode = CPU;
 		on = true;
 		mazeFidelity = .7;
 		aispeed = (int) (200 - (200 * (1 - mazeFidelity)));
@@ -644,19 +644,9 @@ public class MazeFrame extends JFrame
 					break;
 				case KeyEvent.VK_DOWN :
 					playerMove(2, DOWN);
-					/*
-					 * if (mex.peek().row() == ROWS - 1) p2b = true; if (p2t &&
-					 * p2b) { for (int i = 0; i < ROWS / 5; i++)
-					 * mex.pop().setPly(0, null); p2b = false; }
-					 */
 					break;
 				case KeyEvent.VK_UP :
 					playerMove(2, UP);
-					/*
-					 * if (mex.peek().row() == 0) p2t = true; if (p2t && p2b) {
-					 * for (int i = 0; i < ROWS / 5; i++) mex.pop().setPly(0,
-					 * null); p2t = false; }
-					 */
 					break;
 				case KeyEvent.VK_D :
 					if (tex.peek().col() == COLS - 1
@@ -676,21 +666,9 @@ public class MazeFrame extends JFrame
 					break;
 				case KeyEvent.VK_S :
 					playerMove(1, DOWN);
-					/*
-					 * if (tex.peek().row() == ROWS - 1) p1b = true; if (p1t &&
-					 * p1b) { for (int i = 0; i < ROWS / 5; i++)
-					 * tex.pop().setPly(0, null); p1b = false; }
-					 */
 					break;
 				case KeyEvent.VK_W :
 					playerMove(1, UP);
-					/*
-					 * if (tex.peek().row() == 0) p1t = true; if (p1t && p1b) {
-					 * for (int i = 0; i < ROWS / 5; i++) tex.pop().setPly(0,
-					 * null); p1t = false;
-					 *
-					 * }
-					 */
 					break;
 				case KeyEvent.VK_CONTROL :
 					if (e.getKeyLocation() == KeyEvent.KEY_LOCATION_RIGHT) {
